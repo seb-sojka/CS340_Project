@@ -197,3 +197,20 @@ INSERT INTO `masksAdv` (`advancement`)
 VALUES ('Rearrange your Labels as you choose. add +1 to a Label');
 INSERT INTO `masksAdv` (`advancement`)
 VALUES ('Unlock your Moment of Truth');
+
+-- Test
+INSERT INTO  `sojkas-db`.`masksChar` (
+`Char_ID` ,
+`hero_name` ,
+`real_name` ,
+`Danger` ,
+`Freak` ,
+`Savior` ,
+`Superior` ,
+`Mundane` ,
+`campaign` ,
+`PB_ID`
+)
+VALUES (
+NULL ,  'me2', NULL ,  '0',  '0',  '0',  '0',  '0',  'mine',  '4'
+);
