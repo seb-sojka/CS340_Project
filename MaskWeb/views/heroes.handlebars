@@ -11,6 +11,8 @@
         {{#each heroes}} 
         <tr> 
             <td>{{hero_name}}</td> 
+			<td><button onclick="deletePerson({{id}})">Delete</button></td>
+            <td><a href="/people/{{id}}">Update</a></td>
         </tr> 
         {{/each}} 
     </tbody> 
