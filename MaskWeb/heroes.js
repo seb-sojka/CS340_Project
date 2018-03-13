@@ -2,7 +2,7 @@ module.exports = function(){
     var express = require('express');
     var router = express.Router();
 
-    function getPeople(res, mysql, context, complete){
+    function getHeroes(res, mysql, context, complete){
         mysql.pool.query("SELECT masksChar.CHAR_ID, hero_name FROM masksChar", function(error, results, fields){
             if(error){
                 res.write(JSON.stringify(error));
@@ -33,7 +33,7 @@ module.exports = function(){
         var context = {};
         //context.jsscripts = ["deleteperson.js"];
         var mysql = req.app.get('mysql');
-        getHero(res, mysql, context, complete);
+        getHeroes(res, mysql, context, complete);
         function complete(){
             callbackCount++;
             if(callbackCount >= 2){
