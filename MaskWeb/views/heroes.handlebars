@@ -5,12 +5,14 @@
 <table>
     <thead> 
         <th>Name</th> 
+		<th>Playbook</th>
     </thead> 
     <tbody> 
         {{#each heroes}} 
         <tr> 
             <td>{{hero_name}}</td> 
-			<td>{{playbook}}</td> 
+			<td>{{playbook}}</td>
+			<td><a href="/heroes/{{id}}">See/Update</a></td>
         </tr> 
         {{/each}} 
     </tbody> 
