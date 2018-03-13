@@ -199,7 +199,7 @@ INSERT INTO `masksAdv` (`advancement`)
 VALUES ('Unlock your Moment of Truth');
 
 -- Test
-INSERT INTO  `sojkas-db`.`masksChar` (
+INSERT INTO  `masksChar` (
 `Char_ID` ,
 `hero_name` ,
 `real_name` ,
