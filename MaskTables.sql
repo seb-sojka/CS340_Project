@@ -200,7 +200,6 @@ VALUES ('Unlock your Moment of Truth');
 
 -- Test
 INSERT INTO  `masksChar` (
-`Char_ID` ,
 `hero_name` ,
 `real_name` ,
 `Danger` ,
@@ -212,5 +211,5 @@ INSERT INTO  `masksChar` (
 `PB_ID`
 )
 VALUES (
-NULL ,  'me2', NULL ,  '0',  '0',  '0',  '0',  '0',  'mine',  '4'
+'me2', NULL ,  '0',  '0',  '0',  '0',  '0',  'mine',  '4'
 );
