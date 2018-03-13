@@ -2,19 +2,8 @@ module.exports = function(){
     var express = require('express');
     var router = express.Router();
 
-    function getPlanets(res, mysql, context, complete){
-        mysql.pool.query("SELECT id, name FROM bsg_planets", function(error, results, fields){
-            if(error){
-                res.write(JSON.stringify(error));
-                res.end();
-            }
-            context.planets  = results;
-            complete();
-        });
-    }
-
     function getPeople(res, mysql, context, complete){
-        mysql.pool.query("SELECT bsg_people.id, fname, lname, bsg_planets.name AS homeworld, age FROM bsg_people INNER JOIN bsg_planets ON homeworld = bsg_planets.id", function(error, results, fields){
+        mysql.pool.query("SELECT masksChar.CHAR_ID, hero_name FROM masksChar", function(error, results, fields){
             if(error){
                 res.write(JSON.stringify(error));
                 res.end();
@@ -42,10 +31,9 @@ module.exports = function(){
     router.get('/', function(req, res){
         var callbackCount = 0;
         var context = {};
-        context.jsscripts = ["deleteperson.js"];
+        //context.jsscripts = ["deleteperson.js"];
         var mysql = req.app.get('mysql');
-        getPeople(res, mysql, context, complete);
-        getPlanets(res, mysql, context, complete);
+        getHero(res, mysql, context, complete);
         function complete(){
             callbackCount++;
             if(callbackCount >= 2){
