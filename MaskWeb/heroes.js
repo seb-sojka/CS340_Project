@@ -3,7 +3,7 @@ module.exports = function(){
     var router = express.Router();
 
     function getHeroes(res, mysql, context, complete){
-        mysql.pool.query("SELECT masksChar.Char_ID, hero_name FROM masksChar", function(error, results, fields){
+        mysql.pool.query("SELECT masksChar.Char_ID, hero_name, masksPlaybook.name AS playbook FROM masksChar INNER JOIN masksPlaybook ON masksChar.PB_ID = masksPlaybook.PB_ID", function(error, results, fields){
             if(error){
                 res.write(JSON.stringify(error));
                 res.end();

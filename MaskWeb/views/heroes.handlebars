@@ -1,5 +1,4 @@
-<h1>Current people:</h1>
-<h1>Handlebars JS Example</h1>
+<h1>Current heroes:</h1>
 {{#each foo}}
 {{this}}
 {{/each}}
@@ -11,8 +10,7 @@
         {{#each heroes}} 
         <tr> 
             <td>{{hero_name}}</td> 
-			<td><button onclick="deletePerson({{id}})">Delete</button></td>
-            <td><a href="/people/{{id}}">Update</a></td>
+			<td>{{playbook}}</td> 
         </tr> 
         {{/each}} 
     </tbody> 
