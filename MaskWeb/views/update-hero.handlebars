@@ -1,0 +1,12 @@
+<h1>{{hero.hero_name}}:</h1>
+<form id="update-hero" action="/heroes" method="post">
+    Hero name: {{hero.hero_name}}<br>
+    Real name: {{hero.real_name}}<br>
+	Playbook: {{hero.playbook}}<br>
+	Danger: <input type="number" min="-2" max="3" value="{{hero.danger}" name="danger" id ="danger">​<br>
+	Freak: <select name="freak" id="freak"></select>​<br>
+	Savior: <select name="savior" id="savior"></select>​<br>
+	Superior: <select name="superior" id="savior"></select>​<br>
+	Mundane: <select name="mundane"id="mundane" ></select>​<br>
+	
+</form>
