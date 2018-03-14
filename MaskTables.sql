@@ -11,17 +11,6 @@ DROP TABLE IF EXISTS `masksPlaybook`;
 DROP TABLE IF EXISTS `masksAdv`;
 
 
--- Create a table for the player of a game of Masks
--- Adv_ID - an auto incrementing integer which is the primary key
--- advancement - a text type for the advancement do
-
-CREATE TABLE `masksAdv` (
-  `Adv_ID` int(11) NOT NULL AUTO_INCREMENT,
-  `advancement` TEXT NOT NULL,
-  PRIMARY KEY (`Adv_ID`)
-) ENGINE=InnoDB;
-
-
 -- Create a table for the playbook used by characters
 -- PB_id - an integer which is a foreign key reference to the playbook
 -- name - a varchar with a maximum length of 255 characters, cannot be null, name of the plabook
@@ -66,6 +55,7 @@ CREATE TABLE `masksChar` (
   `Savior` int(1) NOT NULL DEFAULT '0',
   `Superior` int(1) NOT NULL DEFAULT '0',
   `Mundane` int(1) NOT NULL DEFAULT '0',
+  `potential` int(1) NOT NULL DEFAULT '0',
   `campaign` varchar(255) NOT NULL,
   `PB_ID` int(11) NOT NULL,
   KEY `PB_ID` (`PB_ID`),
@@ -73,24 +63,6 @@ CREATE TABLE `masksChar` (
   CONSTRAINT `playbook` FOREIGN KEY (`PB_ID`) REFERENCES `masksPlaybook` (`PB_ID`)
 ) ENGINE=InnoDB;
 
-
--- Create a table for the player of a game of Masks
--- Player_ID - an auto incrementing integer which is the primary key
--- first_name - a varchar with a maximum length of 255 characters, not null
--- last_name - a varchar with a maximum length of 255 characters
--- Char_ID - an integer which is a foreign key reference to a character
--- the combination of the first_name and last_name must be unique in this table
-
-CREATE TABLE `masksPlayer` (
-  `Player_ID` int(11) NOT NULL AUTO_INCREMENT,
-  `first_name` varchar(255) NOT NULL,
-  `last_name` varchar(255),
-  `Char_ID` int(11),
-  KEY `Char_ID` (`Char_ID`),
-  PRIMARY KEY (`Player_ID`),
-  UNIQUE KEY `name`(`first_name`, `last_name`),
-  CONSTRAINT `player_character` FOREIGN KEY (`Char_ID`) REFERENCES `masksChar` (`Char_ID`)
-) ENGINE=InnoDB;
 
 -- Create a table to work with conditions and what roll the effect
 -- Con_id - an auto incrementing integer which is the primary key
@@ -130,30 +102,6 @@ CREATE TABLE `masksChar_Con` (
   CONSTRAINT `con_con` FOREIGN KEY (`Con_id`) REFERENCES `masksCon` (`Con_id`)
 ) ENGINE=InnoDB;
 
--- Create a table to work with character and advancements chosen
--- Char_id - an integer which is a foreign key reference to character 
--- Adv_id - an integer which is a foreign key reference to the advancement 
-
-CREATE TABLE `masksChar_Adv` (
-  `Char_id` int(11) NOT NULL DEFAULT '0',
-  `Adv_id` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`Char_id`,`Adv_id`),
-  CONSTRAINT `adv_char` FOREIGN KEY (`Char_id`) REFERENCES `masksChar` (`Char_id`),
-  CONSTRAINT `adv_adv` FOREIGN KEY (`Adv_id`) REFERENCES `masksAdv` (`Adv_id`)
-) ENGINE=InnoDB;
-
-
--- Create a table to work with playbook and advancements available
--- PB_id - an integer which is a foreign key reference to playbook 
--- Adv_id - an integer which is a foreign key reference to the advancement 
-
-CREATE TABLE `masksPB_Adv` (
-  `PB_id` int(11) NOT NULL DEFAULT '0',
-  `Adv_id` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`PB_id`,`Adv_id`),
-  CONSTRAINT `adv_PB` FOREIGN KEY (`PB_id`) REFERENCES `masksPlaybook` (`PB_id`),
-  CONSTRAINT `adv_adv2` FOREIGN KEY (`Adv_id`) REFERENCES `masksAdv` (`Adv_id`)
-) ENGINE=InnoDB;
 
 INSERT INTO `masksCon` (`name`, `rolls`)
 VALUES ('Afraid', 'directly engage a threat');
@@ -187,16 +135,6 @@ VALUES ('The Protege', '-1', '0', '1', '2', '0');
 INSERT INTO `masksPlaybook` (`name`, `Danger`, `Freak`, `Savior`, `Superior`, `Mundane`)
 VALUES ('The Transformed', '1', '3', '0', '-1', '-1');
 
-INSERT INTO `masksAdv` (`advancement`)
-VALUES ('Take another move from your playbook');
-INSERT INTO `masksAdv` (`advancement`)
-VALUES ('Take a move from another playbook');
-INSERT INTO `masksAdv` (`advancement`)
-VALUES (' Someone permanently loses Influence over you. add +1 to a Label');
-INSERT INTO `masksAdv` (`advancement`)
-VALUES ('Rearrange your Labels as you choose. add +1 to a Label');
-INSERT INTO `masksAdv` (`advancement`)
-VALUES ('Unlock your Moment of Truth');
 
 -- Test
 INSERT INTO  `masksChar` (

@@ -14,7 +14,7 @@ module.exports = function(){
     }
 
     function getHero(res, mysql, context, id, complete){
-        var sql = "SELECT masksChar.Char_ID, hero_name, masksPlaybook.name AS playbook, masksChar.Danger, masksChar.Freak, masksChar.Savior, masksChar.Superior, masksChar.Mundane FROM masksChar INNER JOIN masksPlaybook ON masksChar.PB_ID = masksPlaybook.PB_ID WHERE Char_ID = ?";
+        var sql = "SELECT masksChar.Char_ID, hero_name, masksPlaybook.name AS playbook, masksChar.Danger, masksChar.Freak, masksChar.Savior, masksChar.Superior, masksChar.Mundane, Potential FROM masksChar INNER JOIN masksPlaybook ON masksChar.PB_ID = masksPlaybook.PB_ID WHERE Char_ID = ?";
         var inserts = [id];
         mysql.pool.query(sql, inserts, function(error, results, fields){
             if(error){
@@ -25,7 +25,32 @@ module.exports = function(){
             complete();
         });
     }
+	
+	function getInflOn(res, mysql, context, id, complete){
+        var sql = "SELECT Influe_ID FROM masksInfluence WHERE Char_ID = ?";
+        var inserts = [id];
+        mysql.pool.query(sql, inserts, function(error, results, fields){
+            if(error){
+                res.write(JSON.stringify(error));
+                res.end();
+            }
+            context.inflon = results[0];
+            complete();
+        });
+    }
 
+	function getInflBy(res, mysql, context, id, complete){
+        var sql = "SELECT Char_ID FROM masksInfluence WHERE Influe_ID = ?";
+        var inserts = [id];
+        mysql.pool.query(sql, inserts, function(error, results, fields){
+            if(error){
+                res.write(JSON.stringify(error));
+                res.end();
+            }
+            context.inflon = results[0];
+            complete();
+        });
+    }
     /*Display all people. Requires web based javascript to delete users with AJAX*/
 
     router.get('/', function(req, res){
@@ -48,9 +73,10 @@ module.exports = function(){
     router.get('/:id', function(req, res){
         callbackCount = 0;
         var context = {};
-        context.jsscripts = ["labels.js"];
         var mysql = req.app.get('mysql');
         getHero(res, mysql, context, req.params.id, complete);
+		getInflOn(res, mysql, context, req.params.id, complete);
+		getInflBy(res, mysql, context, req.params.id, complete);
         function complete(){
             callbackCount++;
             if(callbackCount >= 1){
