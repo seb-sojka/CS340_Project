@@ -14,14 +14,14 @@ module.exports = function(){
     }
 
     function getPerson(res, mysql, context, id, complete){
-        var sql = "SELECT id, fname, lname, homeworld, age FROM bsg_people WHERE id = ?";
+        var sql = "SELECT masksChar.Char_ID, hero_name, masksPlaybook.name AS playbook FROM masksChar INNER JOIN masksPlaybook ON masksChar.PB_ID = masksPlaybook.PB_ID WHERE Char_ID = ?";
         var inserts = [id];
         mysql.pool.query(sql, inserts, function(error, results, fields){
             if(error){
                 res.write(JSON.stringify(error));
                 res.end();
             }
-            context.heroes = results;
+            context.hero = results;
             complete();
         });
     }
@@ -43,7 +43,7 @@ module.exports = function(){
         }
     });
 
-    /* Display one person for the specific purpose of updating people */
+    /* Display one hero with the possibility  update */
 
     router.get('/:id', function(req, res){
         callbackCount = 0;
@@ -54,7 +54,7 @@ module.exports = function(){
         function complete(){
             callbackCount++;
             if(callbackCount >= 1){
-                res.render('update-person', context);
+                res.render('update-hero', context);
             }
 
         }
