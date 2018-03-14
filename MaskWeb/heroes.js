@@ -13,8 +13,8 @@ module.exports = function(){
         });
     }
 
-    function getHeroes(res, mysql, context, id, complete){
-        var sql = "SELECT masksChar.Char_ID, hero_name, real_name, Danger, Freak, Savior, Superior, Mundane, masksPlaybook.name AS playbook FROM masksChar INNER JOIN masksPlaybook ON masksChar.PB_ID = masksPlaybook.PB_ID WHERE Char_ID = ?";
+    function getPerson(res, mysql, context, id, complete){
+        var sql = "SELECT id, fname, lname, homeworld, age FROM bsg_people WHERE id = ?";
         var inserts = [id];
         mysql.pool.query(sql, inserts, function(error, results, fields){
             if(error){
@@ -43,21 +43,38 @@ module.exports = function(){
         }
     });
 
-    /* Display one person that can be updated */
+    /* Display one person for the specific purpose of updating people */
 
     router.get('/:id', function(req, res){
         callbackCount = 0;
         var context = {};
         context.jsscripts = ["selectedplanet.js", "updateperson.js"];
         var mysql = req.app.get('mysql');
-        getHeroes(res, mysql, context, req.params.id, complete);
+        getPerson(res, mysql, context, req.params.id, complete);
+        getPlanets(res, mysql, context, complete);
         function complete(){
             callbackCount++;
-            if(callbackCount >= 1){
+            if(callbackCount >= 2){
                 res.render('update-person', context);
             }
 
         }
+    });
+
+    /* Adds a person, redirects to the people page after adding */
+
+    router.post('/', function(req, res){
+        var mysql = req.app.get('mysql');
+        var sql = "INSERT INTO bsg_people (fname, lname, homeworld, age) VALUES (?,?,?,?)";
+        var inserts = [req.body.fname, req.body.lname, req.body.homeworld, req.body.age];
+        sql = mysql.pool.query(sql,inserts,function(error, results, fields){
+            if(error){
+                res.write(JSON.stringify(error));
+                res.end();
+            }else{
+                res.redirect('/people');
+            }
+        });
     });
 
     /* The URI that update data is sent to in order to update a person */
@@ -76,6 +93,23 @@ module.exports = function(){
             }
         });
     });
+
+    /* Route to delete a person, simply returns a 202 upon success. Ajax will handle this. */
+
+    router.delete('/:id', function(req, res){
+        var mysql = req.app.get('mysql');
+        var sql = "DELETE FROM bsg_people WHERE id = ?";
+        var inserts = [req.params.id];
+        sql = mysql.pool.query(sql, inserts, function(error, results, fields){
+            if(error){
+                res.write(JSON.stringify(error));
+                res.status(400);
+                res.end();
+            }else{
+                res.status(202).end();
+            }
+        })
+    })
 
     return router;
 }();

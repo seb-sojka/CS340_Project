@@ -73,6 +73,25 @@ CREATE TABLE `masksChar` (
   CONSTRAINT `playbook` FOREIGN KEY (`PB_ID`) REFERENCES `masksPlaybook` (`PB_ID`)
 ) ENGINE=InnoDB;
 
+
+-- Create a table for the player of a game of Masks
+-- Player_ID - an auto incrementing integer which is the primary key
+-- first_name - a varchar with a maximum length of 255 characters, not null
+-- last_name - a varchar with a maximum length of 255 characters
+-- Char_ID - an integer which is a foreign key reference to a character
+-- the combination of the first_name and last_name must be unique in this table
+
+CREATE TABLE `masksPlayer` (
+  `Player_ID` int(11) NOT NULL AUTO_INCREMENT,
+  `first_name` varchar(255) NOT NULL,
+  `last_name` varchar(255),
+  `Char_ID` int(11),
+  KEY `Char_ID` (`Char_ID`),
+  PRIMARY KEY (`Player_ID`),
+  UNIQUE KEY `name`(`first_name`, `last_name`),
+  CONSTRAINT `player_character` FOREIGN KEY (`Char_ID`) REFERENCES `masksChar` (`Char_ID`)
+) ENGINE=InnoDB;
+
 -- Create a table to work with conditions and what roll the effect
 -- Con_id - an auto incrementing integer which is the primary key
 -- name - a varchar with a maximum length of 255 characters, not null, name of the condition
