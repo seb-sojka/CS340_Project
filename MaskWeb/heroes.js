@@ -14,7 +14,7 @@ module.exports = function(){
     }
 
     function getHero(res, mysql, context, id, complete){
-        var sql = "SELECT masksChar.Char_ID, hero_name, masksPlaybook.name AS playbook FROM masksChar INNER JOIN masksPlaybook ON masksChar.PB_ID = masksPlaybook.PB_ID WHERE Char_ID = ?";
+        var sql = "SELECT masksChar.Char_ID, hero_name, masksPlaybook.name AS playbook, Danger,Freak, Savior, Superior, Mundane FROM masksChar INNER JOIN masksPlaybook ON masksChar.PB_ID = masksPlaybook.PB_ID WHERE Char_ID = ?";
         var inserts = [id];
         mysql.pool.query(sql, inserts, function(error, results, fields){
             if(error){
@@ -48,7 +48,7 @@ module.exports = function(){
     router.get('/:id', function(req, res){
         callbackCount = 0;
         var context = {};
-        //context.jsscripts = ["selectedplanet.js", "updateperson.js"];
+        context.jsscripts = ["labels.js"];
         var mysql = req.app.get('mysql');
         getHero(res, mysql, context, req.params.id, complete);
         function complete(){
