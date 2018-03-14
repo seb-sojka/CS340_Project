@@ -151,3 +151,8 @@ INSERT INTO  `masksChar` (
 VALUES (
 'me2', NULL ,  '0',  '0',  '0',  '0',  '0',  'mine',  '4'
 );
+
+INSERT INTO  `masksInfluence` (`Char_ID`, `Influence_id`)
+VALUES ('1', '1');
+INSERT INTO  `masksChar_Con` (`Char_ID`, `Con_id`)
+VALUES ('1', '1');

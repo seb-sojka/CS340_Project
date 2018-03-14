@@ -27,27 +27,40 @@ module.exports = function(){
     }
 	
 	function getInflOn(res, mysql, context, id, complete){
-        var sql = "SELECT Influe_ID FROM masksInfluence WHERE Char_ID = ?";
+        var sql = "SELECT masksChar.hero_name FROM masksInfluence INNER JOIN masksChar ON masksChar.Char_ID = masksInfluence.Char_ID WHERE masksInfluence.Char_ID = ?";
         var inserts = [id];
         mysql.pool.query(sql, inserts, function(error, results, fields){
             if(error){
                 res.write(JSON.stringify(error));
                 res.end();
             }
-            context.inflon = results[0];
+            context.inflon = results;
+            complete();
+        });
+    }
+	
+	function getCon(res, mysql, context, id, complete){
+        var sql = "SELECT masksCon.name,  masksCon.rolls FROM masksCon INNER JOIN masksChar_Con ON masksChar_Con.Con_ID = masksCon.Con_ID WHERE masksChar_Con.Char_ID = ?";
+        var inserts = [id];
+        mysql.pool.query(sql, inserts, function(error, results, fields){
+            if(error){
+                res.write(JSON.stringify(error));
+                res.end();
+            }
+            context.con = results;
             complete();
         });
     }
 
 	function getInflBy(res, mysql, context, id, complete){
-        var sql = "SELECT Char_ID FROM masksInfluence WHERE Influe_ID = ?";
+        var sql = "SELECT masksChar.hero_name FROM masksInfluence INNER JOIN masksChar ON masksChar.Char_ID = masksInfluence.Char_ID WHERE Influence_id = ?";
         var inserts = [id];
         mysql.pool.query(sql, inserts, function(error, results, fields){
             if(error){
                 res.write(JSON.stringify(error));
                 res.end();
             }
-            context.inflon = results[0];
+            context.inflby = results;
             complete();
         });
     }
@@ -77,9 +90,10 @@ module.exports = function(){
         getHero(res, mysql, context, req.params.id, complete);
 		getInflOn(res, mysql, context, req.params.id, complete);
 		getInflBy(res, mysql, context, req.params.id, complete);
+		getCon(res, mysql, context, req.params.id, complete);
         function complete(){
             callbackCount++;
-            if(callbackCount >= 1){
+            if(callbackCount >= 4){
                 res.render('update-hero', context);
             }
 

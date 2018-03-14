@@ -9,4 +9,14 @@
 	Superior: <input type="number" min="-2" max="3" value="{{hero.Superior}}" name="superior" id ="Superior">​<br>
 	Mundane: <input type="number" min="-2" max="3" value="{{hero.Mundane}}" name="mundane" id ="mundane">​<br>
 	Potential: <input type="number" min="0" max="5" value="{{hero.Potential}}" name="potential" id ="potential">​<br>
+	Influence Over: {{#each inflon}}
+        {{hero_name}}<br>
+        {{/each}}<br>
+	Influence By: {{#each inflby}}
+        {{hero_name}}
+        {{/each}}<br>
+	Conditions: <br>
+		{{#each con}}
+        {{name}} -2 to {{rolls}}<br>
+        {{/each}}<br>
 </form>
