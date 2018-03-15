@@ -149,7 +149,7 @@ INSERT INTO  `masksChar` (
 `PB_ID`
 )
 VALUES (
-'me2', NULL ,  '0',  '0',  '0',  '0',  '0',  'mine',  '4'
+'me2', 'me3' ,  '0',  '0',  '0',  '0',  '0',  'mine',  '4'
 );
 
 INSERT INTO  `masksInfluence` (`Char_ID`, `Influence_id`)

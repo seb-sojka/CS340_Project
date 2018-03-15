@@ -2,6 +2,17 @@ module.exports = function(){
     var express = require('express');
     var router = express.Router();
 
+	function getPlaybooks(res, mysql, context, complete){
+        mysql.pool.query("SELECT PB_ID, name FROM masksPlaybook", function(error, results, fields){
+            if(error){
+                res.write(JSON.stringify(error));
+                res.end();
+            }
+            context.playbooks  = results;
+            complete();
+        });
+    }
+	
     function getHeroes(res, mysql, context, complete){
         mysql.pool.query("SELECT masksChar.Char_ID, hero_name, masksPlaybook.name AS playbook FROM masksChar INNER JOIN masksPlaybook ON masksChar.PB_ID = masksPlaybook.PB_ID", function(error, results, fields){
             if(error){
@@ -14,7 +25,7 @@ module.exports = function(){
     }
 
     function getHero(res, mysql, context, id, complete){
-        var sql = "SELECT masksChar.Char_ID, hero_name, masksPlaybook.name AS playbook, masksChar.Danger, masksChar.Freak, masksChar.Savior, masksChar.Superior, masksChar.Mundane, Potential FROM masksChar INNER JOIN masksPlaybook ON masksChar.PB_ID = masksPlaybook.PB_ID WHERE Char_ID = ?";
+        var sql = "SELECT masksChar.Char_ID, hero_name, real_name, masksPlaybook.name AS playbook, masksChar.Danger, masksChar.Freak, masksChar.Savior, masksChar.Superior, masksChar.Mundane, Potential FROM masksChar INNER JOIN masksPlaybook ON masksChar.PB_ID = masksPlaybook.PB_ID WHERE Char_ID = ?";
         var inserts = [id];
         mysql.pool.query(sql, inserts, function(error, results, fields){
             if(error){
@@ -72,9 +83,10 @@ module.exports = function(){
         context.jsscripts = ["delete.js"];
         var mysql = req.app.get('mysql');
         getHeroes(res, mysql, context, complete);
+		getPlaybooks(res, mysql, context, complete);
         function complete(){
             callbackCount++;
-            if(callbackCount >= 1){
+            if(callbackCount >= 2){
                 res.render('heroes', context);
             }
 
@@ -104,14 +116,15 @@ module.exports = function(){
 
     router.post('/', function(req, res){
         var mysql = req.app.get('mysql');
-        var sql = "INSERT INTO bsg_people (fname, lname, homeworld, age) VALUES (?,?,?,?)";
-        var inserts = [req.body.fname, req.body.lname, req.body.homeworld, req.body.age];
+        var sql = "INSERT INTO masksChar (hero_name, real_name, PB_ID) VALUES (?,?,?)";
+        var inserts = [req.body.hero_name, req.body.real_name, req.body.playbook];
+		console.log("Real Name: " + req.body.real_name);
         sql = mysql.pool.query(sql,inserts,function(error, results, fields){
             if(error){
                 res.write(JSON.stringify(error));
                 res.end();
             }else{
-                res.redirect('/people');
+                res.redirect('/heroes');
             }
         });
     });
