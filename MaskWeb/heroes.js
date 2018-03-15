@@ -2,6 +2,19 @@ module.exports = function(){
     var express = require('express');
     var router = express.Router();
 
+	function getStarting(res, mysql, id, context, complete){
+		var sql = "SELECT Danger, Freak, Savior, Superior, Mundane FROM masksPlaybook WHERE PB_ID = ?";
+        var inserts = [id];
+        mysql.pool.query(sql, inserts, function(error, results, fields){
+            if(error){
+                res.write(JSON.stringify(error));
+                res.end();
+            }
+			context.stats  = results[0];
+			complete();
+        });
+    }
+	
 	function getPlaybooks(res, mysql, context, complete){
         mysql.pool.query("SELECT PB_ID, name FROM masksPlaybook", function(error, results, fields){
             if(error){
@@ -33,6 +46,7 @@ module.exports = function(){
                 res.end();
             }
             context.hero = results[0];
+			console.log("Hero Stuff " + JSON.stringify(context.hero));
             complete();
         });
     }
@@ -96,7 +110,7 @@ module.exports = function(){
     /* Display one hero with the possibility  update */
 
     router.get('/:id', function(req, res){
-        callbackCount = 0;
+        var callbackCount = 0;
         var context = {};
         var mysql = req.app.get('mysql');
         getHero(res, mysql, context, req.params.id, complete);
@@ -115,18 +129,28 @@ module.exports = function(){
     /* Adds a person, redirects to the people page after adding */
 
     router.post('/', function(req, res){
+		var callbackCount = 0;
         var mysql = req.app.get('mysql');
-        var sql = "INSERT INTO masksChar (hero_name, real_name, PB_ID) VALUES (?,?,?)";
-        var inserts = [req.body.hero_name, req.body.real_name, req.body.playbook];
-		console.log("Real Name: " + req.body.real_name);
-        sql = mysql.pool.query(sql,inserts,function(error, results, fields){
-            if(error){
-                res.write(JSON.stringify(error));
-                res.end();
-            }else{
-                res.redirect('/heroes');
+		var context = {};
+		getStarting(res, mysql, req.body.playbook, context, complete);
+		function complete(){
+			callbackCount++;
+            if(callbackCount >= 1){
+				console.log("Stats" + JSON.stringify(context));
+				var sql = "INSERT INTO masksChar (hero_name, real_name, Danger, Freak, Savior, Superior, Mundane, PB_ID) VALUES (?,?,?,?,?,?,?,?)";
+				var inserts = [req.body.hero_name, req.body.real_name, context.stats.Danger, context.stats.Freak, context.stats.Savior, context.stats.Superior, context.stats.Mundane, req.body.playbook];
+				sql = mysql.pool.query(sql,inserts,function(error, results, fields){
+				if(error){
+					res.write(JSON.stringify(error));
+					res.end();
+				}
+			});
+			res.redirect('/heroes');
             }
-        });
+
+        }
+		
+        
     });
 
     /* The URI that update data is sent to in order to update a person */
