@@ -69,7 +69,7 @@ module.exports = function(){
     router.get('/', function(req, res){
         var callbackCount = 0;
         var context = {};
-        context.jsscripts = ["deleteperson.js"];
+        context.jsscripts = ["delete.js"];
         var mysql = req.app.get('mysql');
         getHeroes(res, mysql, context, complete);
         function complete(){
@@ -137,7 +137,7 @@ module.exports = function(){
 
     router.delete('/:id', function(req, res){
         var mysql = req.app.get('mysql');
-        var sql = "DELETE FROM bsg_people WHERE id = ?";
+        var sql = "DELETE FROM masksChar WHERE Char_ID = ?";
         var inserts = [req.params.id];
         sql = mysql.pool.query(sql, inserts, function(error, results, fields){
             if(error){

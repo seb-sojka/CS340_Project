@@ -14,6 +14,7 @@
 			<th>{{Char_ID}}</th> 
             <td>{{hero_name}}</td> 
 			<td>{{playbook}}</td>
+			<td><button onclick="deleteHero({{Char_ID}})">Delete</button></td>
 			<td><a href="/heroes/{{Char_ID}}">See/Update</a></td>
         </tr> 
         {{/each}} 
