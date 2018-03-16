@@ -13,12 +13,16 @@
 	Superior: <input type="number" min="-2" max="3" value="{{hero.Superior}}" name="superior" id ="Superior">​<br>
 	Mundane: <input type="number" min="-2" max="3" value="{{hero.Mundane}}" name="mundane" id ="mundane">​<br>
 	Potential: <input type="number" min="0" max="5" value="{{hero.Potential}}" name="potential" id ="potential">​<br>
-	Influence Over: {{#each inflon}}
-        {{hero_name}}<br>
-        {{/each}}<br>
-	Influence By: {{#each inflby}}
-        {{hero_name}}<br>
-        {{/each}}<br>
+	Influence Over: <br>
+		<select name="influon" size="3">
+		{{#each inflon}}
+			<option value="{{Char_ID}}">{{hero_name}}</option>
+        {{/each}}</select><br>
+	Influence By:<br>
+		<select name="influby" size="3">
+		{{#each inflby}}
+			<option value="{{Char_ID}}">{{hero_name}}</option>
+        {{/each}}</select><br>
 	Conditions: <br>
 		{{#each con}}
         {{name}}: -2 to {{rolls}}<br>
