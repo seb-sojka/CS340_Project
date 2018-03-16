@@ -38,7 +38,7 @@ module.exports = function(){
     }
 
     function getHero(res, mysql, context, id, complete){
-        var sql = "SELECT masksChar.Char_ID, hero_name, real_name, masksPlaybook.name AS playbook, masksChar.Danger, masksChar.Freak, masksChar.Savior, masksChar.Superior, masksChar.Mundane, Potential FROM masksChar INNER JOIN masksPlaybook ON masksChar.PB_ID = masksPlaybook.PB_ID WHERE Char_ID = ?";
+        var sql = "SELECT masksChar.Char_ID, hero_name, real_name, PB_ID, masksChar.Danger, masksChar.Freak, masksChar.Savior, masksChar.Superior, masksChar.Mundane, Potential FROM masksChar WHERE Char_ID = ?";
         var inserts = [id];
         mysql.pool.query(sql, inserts, function(error, results, fields){
             if(error){
@@ -113,16 +113,17 @@ module.exports = function(){
         var callbackCount = 0;
         var context = {};
         var mysql = req.app.get('mysql');
+		context.jsscripts = ["selectedplaybook.js", "updatehero.js"];
+		getPlaybooks(res, mysql, context, complete);
         getHero(res, mysql, context, req.params.id, complete);
 		getInflOn(res, mysql, context, req.params.id, complete);
 		getInflBy(res, mysql, context, req.params.id, complete);
 		getCon(res, mysql, context, req.params.id, complete);
         function complete(){
             callbackCount++;
-            if(callbackCount >= 4){
+            if(callbackCount >= 5){
                 res.render('update-hero', context);
             }
-
         }
     });
 
@@ -157,8 +158,9 @@ module.exports = function(){
 
     router.put('/:id', function(req, res){
         var mysql = req.app.get('mysql');
-        var sql = "UPDATE bsg_people SET fname=?, lname=?, homeworld=?, age=? WHERE id=?";
-        var inserts = [req.body.fname, req.body.lname, req.body.homeworld, req.body.age, req.params.id];
+        var sql = "UPDATE masksChar SET hero_name=?, real_name=?, PB_ID=? WHERE id=?";
+        var inserts = [req.body.hero_name, req.body.real_name, req.body.playbook, req.params.id];
+		console.log("Inserts" + inserts);
         sql = mysql.pool.query(sql,inserts,function(error, results, fields){
             if(error){
                 res.write(JSON.stringify(error));
@@ -176,6 +178,7 @@ module.exports = function(){
         var mysql = req.app.get('mysql');
         var sql = "DELETE FROM masksChar WHERE Char_ID = ?";
         var inserts = [req.params.id];
+		console.log("In Router.Delete");
         sql = mysql.pool.query(sql, inserts, function(error, results, fields){
             if(error){
                 res.write(JSON.stringify(error));

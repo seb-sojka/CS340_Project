@@ -1,8 +1,13 @@
 <h1>{{hero.hero_name}}:</h1>
 <form id="update-hero" action="/heroes" method="post">
-    Hero name: {{hero.hero_name}}<br>
-    Real name: {{hero.real_name}}<br>
-	Playbook: {{hero.playbook}}<br>
+    Hero name: <input type="text" name="hero_name" value="{{hero.hero_name}}"><br>
+    Real name: <input type="text" name="real_name" value="{{hero.real_name}}"><br>
+	PL_PB: {{hero.PB_ID}} <br>
+	Playbook: <select name="playbook" id="playbook-selector"> 
+        {{#each playbooks}}
+			<option value="{{PB_ID}}">{{name}}</option>
+        {{/each}}
+	​</select><br>
 	Danger: <input type="number" min="-2" max="3" value="{{hero.Danger}}" name="danger" id ="danger">​<br>
 	Freak: <input type="number" min="-2" max="3" value="{{hero.Freak}}" name="freak" id ="freak">​<br>
 	Savior: <input type="number" min="-2" max="3" value="{{hero.Savior}}" name="savior" id ="savior">​<br>
@@ -13,10 +18,14 @@
         {{hero_name}}<br>
         {{/each}}<br>
 	Influence By: {{#each inflby}}
-        {{hero_name}}
+        {{hero_name}}<br>
         {{/each}}<br>
 	Conditions: <br>
 		{{#each con}}
         {{name}}: -2 to {{rolls}}<br>
         {{/each}}<br>
+
 </form>
+<button onclick="updateHero({{hero.Char_ID}})"> Save </button>
+<button onclick = "cancel()"> Cancel </button>
+<script defer>selectPlaybook({{hero.PB_ID}})</script>
