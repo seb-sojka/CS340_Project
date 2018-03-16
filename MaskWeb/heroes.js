@@ -158,18 +158,21 @@ module.exports = function(){
 
     router.put('/:id', function(req, res){
         var mysql = req.app.get('mysql');
-        var sql = "UPDATE masksChar SET hero_name=?, real_name=?, PB_ID=? WHERE id=?";
-        var inserts = [req.body.hero_name, req.body.real_name, req.body.playbook, req.params.id];
-		console.log("Inserts" + inserts);
+        var sql = "UPDATE masksChar SET hero_name=?, real_name=?, PB_ID=?, Danger = ?, Freak = ?, Savior = ?, Superior = ?, Mundane = ?, Potential = ? WHERE Char_ID=?";
+        var inserts = [req.body.hero_name, req.body.real_name, req.body.playbook, req.body.danger, req.body.freak, req.body.savior, req.body.superior, req.body.mundane, req.body.potential, req.params.id];
+		console.log("inserts " + inserts);
         sql = mysql.pool.query(sql,inserts,function(error, results, fields){
             if(error){
                 res.write(JSON.stringify(error));
                 res.end();
+				console.log("Error");
             }else{
                 res.status(200);
                 res.end();
+				console.log("Success");
             }
         });
+		console.log("End of update");
     });
 
     /* Route to delete a person, simply returns a 202 upon success. Ajax will handle this. */

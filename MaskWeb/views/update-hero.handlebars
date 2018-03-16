@@ -2,7 +2,6 @@
 <form id="update-hero" action="/heroes" method="post">
     Hero name: <input type="text" name="hero_name" value="{{hero.hero_name}}"><br>
     Real name: <input type="text" name="real_name" value="{{hero.real_name}}"><br>
-	PL_PB: {{hero.PB_ID}} <br>
 	Playbook: <select name="playbook" id="playbook-selector"> 
         {{#each playbooks}}
 			<option value="{{PB_ID}}">{{name}}</option>
