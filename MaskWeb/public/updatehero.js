@@ -1,5 +1,5 @@
 function updateHero(id){
-    $.ajax({
+	$.ajax({
         url: '/heroes/' + id,
         type: 'PUT',
         data: $('#update-hero').serialize(),
@@ -14,12 +14,13 @@ function cancel(){
 };
 
 function setCon(con){
-	var str = "#" + con + "Con";
+	console.log("In Set Con");
+	var str = "#" + "Con" + con;
 	$(str).prop('checked', true);
 };
 
 function setInfl(hero){
-	var str = "#" + hero + "Char";
-	console.log(str);
+	var str = "#" + "Char" + hero;
+	
 	$(str).prop('checked', true);
 };

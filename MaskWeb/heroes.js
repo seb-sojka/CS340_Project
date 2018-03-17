@@ -89,6 +89,19 @@ module.exports = function(){
         });
     }
 	
+	function deleteCons(res, mysql, id){
+	    var sql = "DELETE FROM masksChar_Con WHERE Char_id = ?";
+        var inserts = [id];
+        mysql.pool.query(sql, inserts, function(error, results, fields){
+            if(error){
+                res.write(JSON.stringify(error));
+                res.end();
+            }
+        });
+	
+	}
+	
+	
 	function getConHero(res, mysql, context, id, complete){
         var sql = "SELECT Con_id FROM masksChar_Con WHERE masksChar_Con.Char_ID = ?";
         var inserts = [id];
@@ -115,7 +128,83 @@ module.exports = function(){
         });
     }
     /*Display all people. Requires web based javascript to delete users with AJAX*/
-
+	
+	function setCons(res, mysql, id, body){
+		var sql;
+		var inserts;
+		var con_id = 1;
+		console.log("Body: " + JSON.stringify(body));
+		console.log("Con1 " + body.Con1);
+		if(body.Con1 == "on")
+		{
+			console.log("Con" + con_id);
+			sql = "INSERT INTO `masksChar_Con` (Char_id, Con_id) VALUES (?, ?)";
+			inserts = [id, con_id];
+			sql = mysql.pool.query(sql,inserts,function(error, results, fields){
+				if(error){
+					res.write(JSON.stringify(error));
+					res.end();
+				}
+			});
+		}
+		con_id++;
+		
+		if(body.Con2 == "on")
+		{
+			console.log("Con" + con_id);
+			sql = "INSERT INTO `masksChar_Con` (Char_id, Con_id) VALUES (?, ?)";
+			inserts = [id, con_id];
+			mysql.pool.query(sql, inserts, function(error, results, fields){
+            if(error){
+                res.write(JSON.stringify(error));
+                res.end();
+				}
+			});
+		}
+		con_id++;
+		
+		if(body.Con3 == "on")
+		{
+			console.log("Con" + con_id);
+			sql = "INSERT INTO `masksChar_Con` (Char_id, Con_id) VALUES (?, ?)";
+			inserts = [id, con_id];
+			mysql.pool.query(sql, inserts, function(error, results, fields){
+            if(error){
+                res.write(JSON.stringify(error));
+                res.end();
+				}
+			});
+		}
+		con_id++;
+		
+		if(body.Con4 == "on")
+		{
+			console.log("Con" + con_id);
+			sql = "INSERT INTO `masksChar_Con` (Char_id, Con_id) VALUES (?, ?)";
+			inserts = [id, con_id];
+			mysql.pool.query(sql, inserts, function(error, results, fields){
+            if(error){
+                res.write(JSON.stringify(error));
+                res.end();
+				}
+			});
+		}
+		con_id++;
+		
+		if(body.Con5 == "on")
+		{
+			console.log("Con" + con_id);
+			sql = "INSERT INTO `masksChar_Con` (Char_id, Con_id) VALUES (?, ?)";
+			inserts = [id, con_id];
+			mysql.pool.query(sql, inserts, function(error, results, fields){
+            if(error){
+                res.write(JSON.stringify(error));
+                res.end();
+				}
+			});
+		}
+	}
+	
     router.get('/', function(req, res){
         var callbackCount = 0;
         var context = {};
@@ -187,16 +276,17 @@ module.exports = function(){
     /* The URI that update data is sent to in order to update a person */
 
     router.put('/:id', function(req, res){
-        var mysql = req.app.get('mysql');
+        var mysql = req.app.get('mysql');	
         var sql = "UPDATE masksChar SET hero_name=?, real_name=?, PB_ID=?, Danger = ?, Freak = ?, Savior = ?, Superior = ?, Mundane = ?, Potential = ? WHERE Char_ID=?";
-        var inserts = [req.body.hero_name, req.body.real_name, req.body.playbook, req.body.danger, req.body.freak, req.body.savior, req.body.superior, req.body.mundane, req.body.potential, req.params.id];
-		console.log("inserts " + inserts);
+		var inserts = [req.body.hero_name, req.body.real_name, req.body.playbook, req.body.danger, req.body.freak, req.body.savior, req.body.superior, req.body.mundane, req.body.potential, req.params.id];
         sql = mysql.pool.query(sql,inserts,function(error, results, fields){
             if(error){
                 res.write(JSON.stringify(error));
                 res.end();
-				console.log("Error");
+				console.log("Error" + JSON.stringify(error));
             }else{
+				deleteCons(res, mysql, req.params.id);
+				setCons(res, mysql, req.params.id, req.body);
                 res.status(200);
                 res.end();
 				console.log("Success");
