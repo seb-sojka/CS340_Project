@@ -81,12 +81,12 @@ CREATE TABLE `masksCon` (
 -- Influence_id - an integer which is a foreign key reference to character is influenced by a character
 
 CREATE TABLE `masksInfluence` (
-  `Char_id` int(11) NOT NULL DEFAULT '0',
-  `Influence_id` int(11) NOT NULL DEFAULT '0',
+  `Char_id` int(11),
+  `Influence_id` int(11),
   PRIMARY KEY (`Char_id`,`Influence_id`),
   KEY `Influence_id` (`Influence_id`),
-  CONSTRAINT `char_inf` FOREIGN KEY (`Char_id`) REFERENCES `masksChar` (`Char_id`),
-  CONSTRAINT `influence_char` FOREIGN KEY (`Char_id`) REFERENCES `masksChar` (`Char_id`)
+  CONSTRAINT `char_inf` FOREIGN KEY (`Char_id`) REFERENCES `masksChar` (`Char_id`) ON DELETE CASCADE,
+  CONSTRAINT `influence_char` FOREIGN KEY (`Char_id`) REFERENCES `masksChar` (`Char_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
 -- Create a table to work with character and conditions the character has
@@ -98,7 +98,7 @@ CREATE TABLE `masksChar_Con` (
   `Con_id` int(11) NOT NULL DEFAULT '0',
   KEY `Con_id` (`Con_id`),
   PRIMARY KEY (`Char_id`,`Con_id`),
-  CONSTRAINT `con_char` FOREIGN KEY (`Char_id`) REFERENCES `masksChar` (`Char_id`),
+  CONSTRAINT `con_char` FOREIGN KEY (`Char_id`) REFERENCES `masksChar` (`Char_id`) ON DELETE CASCADE,
   CONSTRAINT `con_con` FOREIGN KEY (`Con_id`) REFERENCES `masksCon` (`Con_id`)
 ) ENGINE=InnoDB;
 
@@ -152,7 +152,22 @@ VALUES (
 'me2', 'me3' ,  '0',  '0',  '0',  '0',  '0',  'mine',  '4'
 );
 
+INSERT INTO  `masksChar` (
+`hero_name` ,
+`real_name` ,
+`Danger` ,
+`Freak` ,
+`Savior` ,
+`Superior` ,
+`Mundane` ,
+`campaign` ,
+`PB_ID`
+)
+VALUES (
+'test2', 'test3' ,  '0',  '0',  '0',  '0',  '0',  'mine',  '4'
+);
+
 INSERT INTO  `masksInfluence` (`Char_ID`, `Influence_id`)
-VALUES ('1', '1');
+VALUES ('1', '2');
 INSERT INTO  `masksChar_Con` (`Char_ID`, `Con_id`)
-VALUES ('1', '1');
+VALUES ('1', '2');

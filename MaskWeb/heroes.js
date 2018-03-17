@@ -181,13 +181,15 @@ module.exports = function(){
         var mysql = req.app.get('mysql');
         var sql = "DELETE FROM masksChar WHERE Char_ID = ?";
         var inserts = [req.params.id];
-		console.log("In Router.Delete");
+		console.log("In Router.Delete Inserts" + inserts);
         sql = mysql.pool.query(sql, inserts, function(error, results, fields){
             if(error){
                 res.write(JSON.stringify(error));
+				console.log("Error " + JSON.stringify(error));
                 res.status(400);
                 res.end();
             }else{
+				console.log("Success ");
                 res.status(202).end();
             }
         })
