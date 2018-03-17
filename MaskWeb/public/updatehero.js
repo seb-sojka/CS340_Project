@@ -13,12 +13,13 @@ function cancel(){
    window.location.replace("./");
 };
 
-function deleteH(id){
-    $.ajax({
-        url: '/heroes/' + id,
-        type: 'DELETE',
-        success: function(result){
-            window.location.reload(true);
-        }
-    })
+function setCon(con){
+	var str = "#" + con + "Con";
+	$(str).prop('checked', true);
+};
+
+function setInfl(hero){
+	var str = "#" + hero + "Char";
+	console.log(str);
+	$(str).prop('checked', true);
 };

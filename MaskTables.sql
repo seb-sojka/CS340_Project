@@ -81,8 +81,8 @@ CREATE TABLE `masksCon` (
 -- Influence_id - an integer which is a foreign key reference to character is influenced by a character
 
 CREATE TABLE `masksInfluence` (
-  `Char_id` int(11),
-  `Influence_id` int(11),
+  `Char_id` NOT NULL int(11),
+  `Influence_id` NOT NULL int(11),
   PRIMARY KEY (`Char_id`,`Influence_id`),
   KEY `Influence_id` (`Influence_id`),
   CONSTRAINT `char_inf` FOREIGN KEY (`Char_id`) REFERENCES `masksChar` (`Char_id`) ON DELETE CASCADE,

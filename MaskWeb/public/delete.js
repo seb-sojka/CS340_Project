@@ -1,4 +1,4 @@
-function deleteHeroes(id){
+function deleteH(id){
     $.ajax({
         url: '/heroes/' + id,
         type: 'DELETE',

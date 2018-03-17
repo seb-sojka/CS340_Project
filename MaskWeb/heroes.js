@@ -15,6 +15,7 @@ module.exports = function(){
         });
     }
 	
+
 	function getPlaybooks(res, mysql, context, complete){
         mysql.pool.query("SELECT PB_ID, name FROM masksPlaybook", function(error, results, fields){
             if(error){
@@ -26,8 +27,32 @@ module.exports = function(){
         });
     }
 	
+	function getCons(res, mysql, context, complete){
+        mysql.pool.query("SELECT Con_id, name, rolls FROM masksCon", function(error, results, fields){
+            if(error){
+                res.write(JSON.stringify(error));
+                res.end();
+            }
+            context.cons  = results;
+            complete();
+        });
+    }
+	
     function getHeroes(res, mysql, context, complete){
         mysql.pool.query("SELECT masksChar.Char_ID, hero_name, masksPlaybook.name AS playbook FROM masksChar INNER JOIN masksPlaybook ON masksChar.PB_ID = masksPlaybook.PB_ID", function(error, results, fields){
+            if(error){
+                res.write(JSON.stringify(error));
+                res.end();
+            }
+            context.heroes = results;
+            complete();
+        });
+    }
+	
+	function getOtherHeroes(res, mysql, context, id, complete){
+        var sql = "SELECT Char_ID, hero_name FROM masksChar WHERE Char_ID != ?";
+		var inserts = [id];
+        mysql.pool.query(sql, inserts, function(error, results, fields){
             if(error){
                 res.write(JSON.stringify(error));
                 res.end();
@@ -52,7 +77,7 @@ module.exports = function(){
     }
 	
 	function getInflOn(res, mysql, context, id, complete){
-        var sql = "SELECT masksChar.hero_name FROM masksInfluence INNER JOIN masksChar ON masksChar.Char_ID = masksInfluence.Char_ID WHERE masksInfluence.Char_ID = ?";
+        var sql = "SELECT masksChar.Char_ID, masksChar.hero_name FROM masksInfluence INNER JOIN masksChar ON masksChar.Char_ID = masksInfluence.Influence_id WHERE masksInfluence.Char_ID = ?";
         var inserts = [id];
         mysql.pool.query(sql, inserts, function(error, results, fields){
             if(error){
@@ -64,15 +89,15 @@ module.exports = function(){
         });
     }
 	
-	function getCon(res, mysql, context, id, complete){
-        var sql = "SELECT masksCon.name,  masksCon.rolls FROM masksCon INNER JOIN masksChar_Con ON masksChar_Con.Con_ID = masksCon.Con_ID WHERE masksChar_Con.Char_ID = ?";
+	function getConHero(res, mysql, context, id, complete){
+        var sql = "SELECT Con_id FROM masksChar_Con WHERE masksChar_Con.Char_ID = ?";
         var inserts = [id];
         mysql.pool.query(sql, inserts, function(error, results, fields){
             if(error){
                 res.write(JSON.stringify(error));
                 res.end();
             }
-            context.con = results;
+            context.conHero = results;
             complete();
         });
     }
@@ -101,6 +126,7 @@ module.exports = function(){
         function complete(){
             callbackCount++;
             if(callbackCount >= 2){
+				console.log("Context: " + JSON.stringify(context.heroes));
                 res.render('heroes', context);
             }
 
@@ -115,13 +141,17 @@ module.exports = function(){
         var mysql = req.app.get('mysql');
 		context.jsscripts = ["selectedplaybook.js", "updatehero.js"];
 		getPlaybooks(res, mysql, context, complete);
+		getCons(res, mysql, context, complete);
+		getOtherHeroes(res, mysql, context, req.params.id, complete)
         getHero(res, mysql, context, req.params.id, complete);
 		getInflOn(res, mysql, context, req.params.id, complete);
 		getInflBy(res, mysql, context, req.params.id, complete);
-		getCon(res, mysql, context, req.params.id, complete);
+		getConHero(res, mysql, context, req.params.id, complete);
+		console.log("inflon: " + context.inflon);
         function complete(){
             callbackCount++;
-            if(callbackCount >= 5){
+            if(callbackCount >= 7){
+				console.log("Context: " + JSON.stringify(context.inflon));
                 res.render('update-hero', context);
             }
         }
