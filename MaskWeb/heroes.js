@@ -133,8 +133,6 @@ module.exports = function(){
 		var sql;
 		var inserts;
 		var con_id = 1;
-		console.log("Body: " + JSON.stringify(body));
-		console.log("Con1 " + body.Con1);
 		if(body.Con1 == "on")
 		{
 			console.log("Con" + con_id);
@@ -205,6 +203,64 @@ module.exports = function(){
 		}
 	}
 	
+	function deleteInfl(res, mysql, id, complete){
+	    var sql = "DELETE FROM masksInfluence WHERE Char_id = ?";
+        var inserts = [id];
+        mysql.pool.query(sql, inserts, function(error, results, fields){
+            if(error){
+                res.write(JSON.stringify(error));
+                res.end();
+            }
+			complete()
+        });
+	
+	}
+	
+	function addInfl(res, mysql, id1, id2){
+		console.log("In add infl");
+	    var sql = "INSERT INTO masksInfluence (Char_id, Influence_id) VALUES (?, ?)";
+        var inserts = [id1, id2];
+        mysql.pool.query(sql, inserts, function(error, results, fields){
+            if(error){
+                res.write(JSON.stringify(error));
+                res.end();
+            }
+			
+        });
+	
+	}
+	
+	function setInfl(res, mysql, id, chars){
+		var callbackCount = 0;
+		var sql;
+		var inserts;
+		var context = {};
+		var length;
+		console.log("Input: " + JSON.stringify(chars));
+		getHeroes(res, mysql, context, complete);
+		deleteInfl(res, mysql, id, complete);
+		function complete(){
+            callbackCount++;
+            if(callbackCount >= 2){
+				length = context.heroes.length;
+				var charCount = 0;
+				for (i = 0; i < length; i++)
+				{
+					
+					var hID = JSON.stringify(context.heroes[i].Char_ID);
+					if(hID != id)
+					{
+						if (chars[charCount].length == 2)
+						{
+							addInfl(res, mysql, id, hID);
+						}
+						charCount++;
+					}
+				}
+			}
+		}
+	}
+	
     router.get('/', function(req, res){
         var callbackCount = 0;
         var context = {};
@@ -221,7 +277,7 @@ module.exports = function(){
 
         }
     });
-
+	
     /* Display one hero with the possibility  update */
 
     router.get('/:id', function(req, res){
@@ -287,6 +343,7 @@ module.exports = function(){
             }else{
 				deleteCons(res, mysql, req.params.id);
 				setCons(res, mysql, req.params.id, req.body);
+				setInfl(res, mysql, req.params.id, req.body.Char);
                 res.status(200);
                 res.end();
 				console.log("Success");

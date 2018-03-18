@@ -15,7 +15,8 @@
 	Potential: <input type="number" min="0" max="5" value="{{hero.Potential}}" name="potential" id ="potential">​<br>
 	Influence Over: <br>
 		{{#each heroes}}
-			<input id="Char{{Char_ID}}" name = "Char{{Char_ID}}" type="checkbox"> <label for="{{Char_ID}}Char">{{hero_name}}</label><br>
+			<input id="Char{{Char_ID}}" name = "Char[{{Char_ID}}]" type="checkbox"  value="1"> <label>{{hero_name}}</label><br>
+			<input type="hidden" name="Char[{{Char_ID}}]" value="0">
         {{/each}}<br>
 	Influence By:<br>
 		{{#each inflby}}
