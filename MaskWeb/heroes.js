@@ -261,6 +261,18 @@ module.exports = function(){
 		}
 	}
 	
+	function getCamps(res, mysql, context, complete){
+		mysql.pool.query("SELECT Camp_ID, name FROM masksCamp", function(error, results, fields){
+            if(error){
+                res.write(JSON.stringify(error));
+                res.end();
+            }
+            context.camps = results;
+            complete();
+        });
+    }
+	}
+	
     router.get('/', function(req, res){
         var callbackCount = 0;
         var context = {};
@@ -268,9 +280,10 @@ module.exports = function(){
         var mysql = req.app.get('mysql');
         getHeroes(res, mysql, context, complete);
 		getPlaybooks(res, mysql, context, complete);
+		getCamps(res, mysql, context, complete);
         function complete(){
             callbackCount++;
-            if(callbackCount >= 2){
+            if(callbackCount >= 3){
 				console.log("Context: " + JSON.stringify(context.heroes));
                 res.render('heroes', context);
             }

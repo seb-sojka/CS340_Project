@@ -24,7 +24,12 @@
     Real name: <input type="text" name="real_name"><br>
     Playbook: <select name="playbook"> 
         {{#each playbooks}}
-        <option value="{{PB_ID}}">{{name}}</option>
+			<option value="{{PB_ID}}">{{name}}</option>
+        {{/each}}
+    </select><br>
+	    Campaign: <select name="Campaign"> 
+        {{#each camps}}
+			<option value="{{Camp_ID}}">{{name}}</option>
         {{/each}}
     </select><br>
     <input type="submit" value="Submit">

@@ -9,6 +9,7 @@ DROP TABLE IF EXISTS `masksChar`;
 DROP TABLE IF EXISTS `masksCon`;
 DROP TABLE IF EXISTS `masksPlaybook`;
 DROP TABLE IF EXISTS `masksAdv`;
+DROP TABLE IF EXISTS `masksCamp`;
 
 
 -- Create a table for the playbook used by characters
@@ -32,6 +33,15 @@ CREATE TABLE `masksPlaybook` (
   PRIMARY KEY (`PB_ID`)
 ) ENGINE=InnoDB;
 
+-- Create a table for the campaigns
+-- PB_id - an integer which is a foreign key reference to the campaign
+-- name - a varchar with a maximum length of 255 characters, cannot be null, name of the campaign
+
+CREATE TABLE `masksCamp` (
+  `Camp_ID` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  PRIMARY KEY (`Camp_ID`)
+) ENGINE=InnoDB;
 
 -- Create a table for the characters of a game of Masks
 -- Char_ID - an auto incrementing integer which is the primary key
@@ -58,9 +68,11 @@ CREATE TABLE `masksChar` (
   `potential` int(1) NOT NULL DEFAULT '0',
   `campaign` varchar(255) NOT NULL,
   `PB_ID` int(11) NOT NULL,
+  `Camp_ID` int(11) NOT NULL DEFAULT '1',
   KEY `PB_ID` (`PB_ID`),
   PRIMARY KEY (`Char_ID`),
-  CONSTRAINT `playbook` FOREIGN KEY (`PB_ID`) REFERENCES `masksPlaybook` (`PB_ID`)
+  CONSTRAINT `playbook` FOREIGN KEY (`PB_ID`) REFERENCES `masksPlaybook` (`PB_ID`), 
+  CONSTRAINT `camps` FOREIGN KEY (`Camp_ID`) REFERENCES `masksCamp` (`Camp_ID`)
 ) ENGINE=InnoDB;
 
 
@@ -81,12 +93,12 @@ CREATE TABLE `masksCon` (
 -- Influence_id - an integer which is a foreign key reference to character is influenced by a character
 
 CREATE TABLE `masksInfluence` (
-  `Char_id` NOT NULL int(11),
-  `Influence_id` NOT NULL int(11),
+  `Char_id` int(11) NOT NULL DEFAULT '0',
+  `Influence_id` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`Char_id`,`Influence_id`),
   KEY `Influence_id` (`Influence_id`),
-  CONSTRAINT `char_inf` FOREIGN KEY (`Char_id`) REFERENCES `masksChar` (`Char_id`) ON DELETE CASCADE,
-  CONSTRAINT `influence_char` FOREIGN KEY (`Char_id`) REFERENCES `masksChar` (`Char_id`) ON DELETE CASCADE
+  CONSTRAINT `char_inf` FOREIGN KEY (`Char_id`) REFERENCES `masksChar` (`Char_id`),
+  CONSTRAINT `influence_char` FOREIGN KEY (`Char_id`) REFERENCES `masksChar` (`Char_id`)
 ) ENGINE=InnoDB;
 
 -- Create a table to work with character and conditions the character has
@@ -98,7 +110,7 @@ CREATE TABLE `masksChar_Con` (
   `Con_id` int(11) NOT NULL DEFAULT '0',
   KEY `Con_id` (`Con_id`),
   PRIMARY KEY (`Char_id`,`Con_id`),
-  CONSTRAINT `con_char` FOREIGN KEY (`Char_id`) REFERENCES `masksChar` (`Char_id`) ON DELETE CASCADE,
+  CONSTRAINT `con_char` FOREIGN KEY (`Char_id`) REFERENCES `masksChar` (`Char_id`),
   CONSTRAINT `con_con` FOREIGN KEY (`Con_id`) REFERENCES `masksCon` (`Con_id`)
 ) ENGINE=InnoDB;
 
@@ -137,6 +149,9 @@ VALUES ('The Transformed', '1', '3', '0', '-1', '-1');
 
 
 -- Test
+Insert INTO `masksCamp` (`name`)
+values('testCamp');
+
 INSERT INTO  `masksChar` (
 `hero_name` ,
 `real_name` ,
@@ -146,10 +161,11 @@ INSERT INTO  `masksChar` (
 `Superior` ,
 `Mundane` ,
 `campaign` ,
-`PB_ID`
+`PB_ID`,
+`Camp_ID`
 )
 VALUES (
-'me2', 'me3' ,  '0',  '0',  '0',  '0',  '0',  'mine',  '4'
+'me2', 'me3' ,  '0',  '0',  '0',  '0',  '0',  'mine',  '4', '1'
 );
 
 INSERT INTO  `masksChar` (
@@ -161,10 +177,11 @@ INSERT INTO  `masksChar` (
 `Superior` ,
 `Mundane` ,
 `campaign` ,
-`PB_ID`
+`PB_ID`,
+`Camp_ID`
 )
 VALUES (
-'test2', 'test3' ,  '0',  '0',  '0',  '0',  '0',  'mine',  '4'
+'test', 'testname' ,  '0',  '0',  '0',  '0',  '0',  'mine',  '7', '1'
 );
 
 INSERT INTO  `masksInfluence` (`Char_ID`, `Influence_id`)
