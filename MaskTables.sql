@@ -156,15 +156,15 @@ VALUES ('Iron Man', 'Tony Stark' ,  '0',  '0',  '0',  '0',  '0',  '2', '1');
 
 INSERT INTO  `masksChar` (`hero_name` ,`Danger` ,`Freak` ,`Savior` ,`Superior` ,
 `Mundane` ,`PB_ID` ,`Camp_ID`)
-VALUES ('Thor',  '0',  '0',  '0',  '0',  '0',  'mine',  '5', '1');
+VALUES ('Thor',  '0',  '0',  '0',  '0',  '0', '5', '1');
 
 INSERT INTO  `masksChar` (`hero_name` ,`real_name` ,`Danger` ,`Freak` ,`Savior` ,`Superior` ,
 `Mundane` ,`PB_ID` ,`Camp_ID`)
-VALUES ('Arrow', 'Oliver Queen' ,  '0',  '0',  '0',  '0',  '0',  'mine',  '3', '2');
+VALUES ('Arrow', 'Oliver Queen' ,  '0',  '0',  '0',  '0',  '0', '3', '2');
 
 INSERT INTO  `masksChar` (`hero_name` ,`real_name` ,`Danger` ,`Freak` ,`Savior` ,`Superior` ,
 `Mundane` ,`PB_ID` ,`Camp_ID`)
-VALUES ('Starfire', '	Koriandr' ,  '0',  '0',  '0',  '0',  '0',  'mine',  '6', '2');
+VALUES ('Starfire', '	Koriandr' ,  '0',  '0',  '0',  '0',  '0', '6', '2');
 
 INSERT INTO  `masksInfluence` (`Char_ID`, `Influence_id`)
 VALUES ('1', '2');
