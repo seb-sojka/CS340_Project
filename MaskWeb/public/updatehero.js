@@ -14,13 +14,19 @@ function cancel(){
 };
 
 function setCon(con){
-	console.log("In Set Con");
 	var str = "#" + "Con" + con;
 	$(str).prop('checked', true);
 };
 
 function setInfl(hero){
 	var str = "#" + "Char" + hero;
-	
 	$(str).prop('checked', true);
 };
+
+function selectPlaybook(id){
+	$("#playbook-selector").val(id);
+}
+
+function selectCamp(id){
+	$("#camp-selector").val(id);
+}

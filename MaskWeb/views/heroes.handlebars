@@ -1,17 +1,12 @@
 <h1>Current heroes:</h1>
-{{#each foo}}
-{{this}}
-{{/each}}
 <table>
     <thead> 
-		<th>ID</th> 
         <th>Name</th> 
 		<th>Playbook</th>
     </thead> 
     <tbody> 
         {{#each heroes}} 
         <tr> 
-			<th>{{Char_ID}}</th> 
             <td>{{hero_name}}</td> 
 			<td>{{playbook}}</td>
 			<td><button onclick="deleteH({{Char_ID}})">Delete</button></td>
@@ -27,11 +22,11 @@
 			<option value="{{PB_ID}}">{{name}}</option>
         {{/each}}
     </select><br>
-	    Campaign: <select name="Campaign"> 
+	Campaign: <select name="campaign"> 
         {{#each camps}}
 			<option value="{{Camp_ID}}">{{name}}</option>
         {{/each}}
-    </select><br>
+    </select><a href="/camp/">Add campaign</a><br>
     <input type="submit" value="Submit">
     </form>
 </table> 

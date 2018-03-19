@@ -63,7 +63,7 @@ module.exports = function(){
     }
 
     function getHero(res, mysql, context, id, complete){
-        var sql = "SELECT masksChar.Char_ID, hero_name, real_name, PB_ID, masksChar.Danger, masksChar.Freak, masksChar.Savior, masksChar.Superior, masksChar.Mundane, Potential FROM masksChar WHERE Char_ID = ?";
+        var sql = "SELECT masksChar.Char_ID, hero_name, real_name, PB_ID, masksChar.Danger, masksChar.Freak, masksChar.Savior, masksChar.Superior, masksChar.Mundane, Potential, Camp_ID FROM masksChar WHERE Char_ID = ?";
         var inserts = [id];
         mysql.pool.query(sql, inserts, function(error, results, fields){
             if(error){
@@ -271,7 +271,6 @@ module.exports = function(){
             complete();
         });
     }
-	}
 	
     router.get('/', function(req, res){
         var callbackCount = 0;
@@ -291,7 +290,7 @@ module.exports = function(){
         }
     });
 	
-    /* Display one hero with the possibility  update */
+    /* Display one hero with the possibility to update */
 
     router.get('/:id', function(req, res){
         var callbackCount = 0;
@@ -305,11 +304,10 @@ module.exports = function(){
 		getInflOn(res, mysql, context, req.params.id, complete);
 		getInflBy(res, mysql, context, req.params.id, complete);
 		getConHero(res, mysql, context, req.params.id, complete);
-		console.log("inflon: " + context.inflon);
+		getCamps(res, mysql, context, complete);
         function complete(){
             callbackCount++;
-            if(callbackCount >= 7){
-				console.log("Context: " + JSON.stringify(context.inflon));
+            if(callbackCount >= 8){
                 res.render('update-hero', context);
             }
         }
@@ -326,8 +324,8 @@ module.exports = function(){
 			callbackCount++;
             if(callbackCount >= 1){
 				console.log("Stats" + JSON.stringify(context));
-				var sql = "INSERT INTO masksChar (hero_name, real_name, Danger, Freak, Savior, Superior, Mundane, PB_ID) VALUES (?,?,?,?,?,?,?,?)";
-				var inserts = [req.body.hero_name, req.body.real_name, context.stats.Danger, context.stats.Freak, context.stats.Savior, context.stats.Superior, context.stats.Mundane, req.body.playbook];
+				var sql = "INSERT INTO masksChar (hero_name, real_name, Danger, Freak, Savior, Superior, Mundane, PB_ID, Camp_ID) VALUES (?,?,?,?,?,?,?,?,?)";
+				var inserts = [req.body.hero_name, req.body.real_name, context.stats.Danger, context.stats.Freak, context.stats.Savior, context.stats.Superior, context.stats.Mundane, req.body.playbook, req.body.campaign];
 				sql = mysql.pool.query(sql,inserts,function(error, results, fields){
 				if(error){
 					res.write(JSON.stringify(error));
@@ -346,8 +344,9 @@ module.exports = function(){
 
     router.put('/:id', function(req, res){
         var mysql = req.app.get('mysql');	
-        var sql = "UPDATE masksChar SET hero_name=?, real_name=?, PB_ID=?, Danger = ?, Freak = ?, Savior = ?, Superior = ?, Mundane = ?, Potential = ? WHERE Char_ID=?";
-		var inserts = [req.body.hero_name, req.body.real_name, req.body.playbook, req.body.danger, req.body.freak, req.body.savior, req.body.superior, req.body.mundane, req.body.potential, req.params.id];
+		console.log("Camp: " + req.body.camp);
+        var sql = "UPDATE masksChar SET hero_name=?, real_name=?, PB_ID=?, Danger = ?, Freak = ?, Savior = ?, Superior = ?, Mundane = ?, Potential = ?, Camp_ID = ? WHERE Char_ID=?";
+		var inserts = [req.body.hero_name, req.body.real_name, req.body.playbook, req.body.danger, req.body.freak, req.body.savior, req.body.superior, req.body.mundane, req.body.potential, req.body.camp, req.params.id];
         sql = mysql.pool.query(sql,inserts,function(error, results, fields){
             if(error){
                 res.write(JSON.stringify(error));

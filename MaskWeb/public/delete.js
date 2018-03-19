@@ -7,3 +7,13 @@ function deleteH(id){
         }
     })
 };
+
+function deleteC(id){
+    $.ajax({
+        url: '/camp/' + id,
+        type: 'DELETE',
+        success: function(result){
+            window.location.reload(true);
+        }
+    })
+};

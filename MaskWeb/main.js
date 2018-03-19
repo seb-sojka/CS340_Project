@@ -19,6 +19,8 @@ app.set('mysql', mysql);
 
 app.use('/heroes', require('./heroes.js'));
 
+app.use('/camp', require('./camp.js'));
+
 app.use(function(req,res){
   res.status(404);
   res.render('404');

@@ -68,11 +68,11 @@ CREATE TABLE `masksChar` (
   `potential` int(1) NOT NULL DEFAULT '0',
   `campaign` varchar(255) NOT NULL,
   `PB_ID` int(11) NOT NULL,
-  `Camp_ID` int(11) NOT NULL DEFAULT '1',
+  `Camp_ID` int(11) NOT NULL ,
   KEY `PB_ID` (`PB_ID`),
   PRIMARY KEY (`Char_ID`),
   CONSTRAINT `playbook` FOREIGN KEY (`PB_ID`) REFERENCES `masksPlaybook` (`PB_ID`), 
-  CONSTRAINT `camps` FOREIGN KEY (`Camp_ID`) REFERENCES `masksCamp` (`Camp_ID`)
+  CONSTRAINT `camps` FOREIGN KEY (`Camp_ID`) REFERENCES `masksCamp` (`Camp_ID`) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
 
@@ -97,8 +97,8 @@ CREATE TABLE `masksInfluence` (
   `Influence_id` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`Char_id`,`Influence_id`),
   KEY `Influence_id` (`Influence_id`),
-  CONSTRAINT `char_inf` FOREIGN KEY (`Char_id`) REFERENCES `masksChar` (`Char_id`),
-  CONSTRAINT `influence_char` FOREIGN KEY (`Char_id`) REFERENCES `masksChar` (`Char_id`)
+  CONSTRAINT `char_inf` FOREIGN KEY (`Char_id`) REFERENCES `masksChar` (`Char_id`) ON DELETE CASCADE,
+  CONSTRAINT `influence_char` FOREIGN KEY (`Char_id`) REFERENCES `masksChar` (`Char_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
 -- Create a table to work with character and conditions the character has
@@ -110,7 +110,7 @@ CREATE TABLE `masksChar_Con` (
   `Con_id` int(11) NOT NULL DEFAULT '0',
   KEY `Con_id` (`Con_id`),
   PRIMARY KEY (`Char_id`,`Con_id`),
-  CONSTRAINT `con_char` FOREIGN KEY (`Char_id`) REFERENCES `masksChar` (`Char_id`),
+  CONSTRAINT `con_char` FOREIGN KEY (`Char_id`) REFERENCES `masksChar` (`Char_id`) ON DELETE CASCADE,
   CONSTRAINT `con_con` FOREIGN KEY (`Con_id`) REFERENCES `masksCon` (`Con_id`)
 ) ENGINE=InnoDB;
 
@@ -151,6 +151,9 @@ VALUES ('The Transformed', '1', '3', '0', '-1', '-1');
 -- Test
 Insert INTO `masksCamp` (`name`)
 values('testCamp');
+
+Insert INTO `masksCamp` (`name`)
+values('testCamp2');
 
 INSERT INTO  `masksChar` (
 `hero_name` ,

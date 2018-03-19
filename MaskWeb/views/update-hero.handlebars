@@ -7,6 +7,11 @@
 			<option value="{{PB_ID}}">{{name}}</option>
         {{/each}}
 	​</select><br>
+	Campaign: <select name="camp" id="camp-selector"> 
+        {{#each camps}}
+			<option value="{{Camp_ID}}">{{name}}</option>
+        {{/each}}
+    </select><br>
 	Danger: <input type="number" min="-2" max="3" value="{{hero.Danger}}" name="danger" id ="danger">​<br>
 	Freak: <input type="number" min="-2" max="3" value="{{hero.Freak}}" name="freak" id ="freak">​<br>
 	Savior: <input type="number" min="-2" max="3" value="{{hero.Savior}}" name="savior" id ="savior">​<br>
@@ -31,6 +36,7 @@
 <button onclick="updateHero({{hero.Char_ID}})"> Save </button>
 <button onclick = "cancel()"> Cancel </button>
 <script defer>selectPlaybook({{hero.PB_ID}});
+selectCamp({{hero.Camp_ID}});
 {{#each conHero}}
 	setCon({{Con_id}});
 {{/each}}
