@@ -1,3 +1,4 @@
+/*All code is heavily inspired by CS340-Sample-Web-App*/
 function deleteH(id){
     $.ajax({
         url: '/heroes/' + id,

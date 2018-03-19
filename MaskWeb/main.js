@@ -2,7 +2,7 @@
     Uses express, dbcon for database connection, body parser to parse form data 
     handlebars for HTML templates  
 */
-
+/*All code is heavily inspired by CS340-Sample-Web-App*/
 var express = require('express');
 var mysql = require('./dbcon.js');
 var bodyParser = require('body-parser');

@@ -3,12 +3,14 @@
     <thead> 
         <th>Name</th> 
 		<th>Playbook</th>
+		<th>Campaign</th>
     </thead> 
     <tbody> 
         {{#each heroes}} 
         <tr> 
             <td>{{hero_name}}</td> 
 			<td>{{playbook}}</td>
+			<td>{{camp}}</td>
 			<td><button onclick="deleteH({{Char_ID}})">Delete</button></td>
 			<td><a href="/heroes/{{Char_ID}}">See/Update</a></td>
         </tr> 
