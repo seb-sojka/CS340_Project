@@ -1,14 +1,10 @@
 -- Table creation queries should immedatley follow the drop table queries, this is to facilitate testing on my end
 
-DROP TABLE IF EXISTS `masksChar_Adv`;
-DROP TABLE IF EXISTS `masksPB_Adv`;
 DROP TABLE IF EXISTS `masksChar_Con`;
-DROP TABLE IF EXISTS `masksPlayer`;
 DROP TABLE IF EXISTS `masksInfluence`;
 DROP TABLE IF EXISTS `masksChar`;
 DROP TABLE IF EXISTS `masksCon`;
 DROP TABLE IF EXISTS `masksPlaybook`;
-DROP TABLE IF EXISTS `masksAdv`;
 DROP TABLE IF EXISTS `masksCamp`;
 
 
@@ -66,7 +62,6 @@ CREATE TABLE `masksChar` (
   `Superior` int(1) NOT NULL DEFAULT '0',
   `Mundane` int(1) NOT NULL DEFAULT '0',
   `potential` int(1) NOT NULL DEFAULT '0',
-  `campaign` varchar(255) NOT NULL,
   `PB_ID` int(11) NOT NULL,
   `Camp_ID` int(11) NOT NULL ,
   KEY `PB_ID` (`PB_ID`),
@@ -150,42 +145,26 @@ VALUES ('The Transformed', '1', '3', '0', '-1', '-1');
 
 -- Test
 Insert INTO `masksCamp` (`name`)
-values('testCamp');
+values('MCU');
 
 Insert INTO `masksCamp` (`name`)
-values('testCamp2');
+values('DC');
 
-INSERT INTO  `masksChar` (
-`hero_name` ,
-`real_name` ,
-`Danger` ,
-`Freak` ,
-`Savior` ,
-`Superior` ,
-`Mundane` ,
-`campaign` ,
-`PB_ID`,
-`Camp_ID`
-)
-VALUES (
-'me2', 'me3' ,  '0',  '0',  '0',  '0',  '0',  'mine',  '4', '1'
-);
+INSERT INTO  `masksChar` (`hero_name` ,`real_name` ,`Danger` ,`Freak` ,`Savior` ,`Superior` ,
+`Mundane` ,`PB_ID` ,`Camp_ID`)
+VALUES ('Iron Man', 'Tony Stark' ,  '0',  '0',  '0',  '0',  '0',  '2', '1');
 
-INSERT INTO  `masksChar` (
-`hero_name` ,
-`real_name` ,
-`Danger` ,
-`Freak` ,
-`Savior` ,
-`Superior` ,
-`Mundane` ,
-`campaign` ,
-`PB_ID`,
-`Camp_ID`
-)
-VALUES (
-'test', 'testname' ,  '0',  '0',  '0',  '0',  '0',  'mine',  '7', '1'
-);
+INSERT INTO  `masksChar` (`hero_name` ,`Danger` ,`Freak` ,`Savior` ,`Superior` ,
+`Mundane` ,`PB_ID` ,`Camp_ID`)
+VALUES ('Thor',  '0',  '0',  '0',  '0',  '0',  'mine',  '5', '1');
+
+INSERT INTO  `masksChar` (`hero_name` ,`real_name` ,`Danger` ,`Freak` ,`Savior` ,`Superior` ,
+`Mundane` ,`PB_ID` ,`Camp_ID`)
+VALUES ('Arrow', 'Oliver Queen' ,  '0',  '0',  '0',  '0',  '0',  'mine',  '3', '2');
+
+INSERT INTO  `masksChar` (`hero_name` ,`real_name` ,`Danger` ,`Freak` ,`Savior` ,`Superior` ,
+`Mundane` ,`PB_ID` ,`Camp_ID`)
+VALUES ('Starfire', '	Koriandr' ,  '0',  '0',  '0',  '0',  '0',  'mine',  '6', '2');
 
 INSERT INTO  `masksInfluence` (`Char_ID`, `Influence_id`)
 VALUES ('1', '2');

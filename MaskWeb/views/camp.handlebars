@@ -1,0 +1,19 @@
+<h1>Current Campaigns:</h1>
+<table>
+    <thead> 
+        <th>Name</th> 
+    </thead> 
+    <tbody> 
+        {{#each camps}} 
+        <tr> 
+			<td>{{name}}</td> 
+			<td><button onclick="deleteC({{Camp_ID}})">Delete</button></td>
+        </tr> 
+        {{/each}} 
+    </tbody>
+	<form id="addCamp" action="/camp" method="post">
+    Name: <input type="text" name="name"><br>
+    </select><br>
+    <input type="submit" value="Submit">
+    </form>
+</table> 
