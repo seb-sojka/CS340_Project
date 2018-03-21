@@ -1,0 +1,18 @@
+<h1>{{camp.name}}</h1>
+<table>
+    <tbody> 
+        {{#each heroes}} 
+        <tr> 
+			<td>{{hero_name}}</td> 
+			<td>{{playbook}</td>
+        </tr> 
+        {{/each}} 
+    </tbody>
+	<form>
+	Campaign: <select name="campaign"> 
+        {{#each camps}}
+			<option value="{{Camp_ID}}">{{name}}</option>
+        {{/each}}
+</form>
+</table> 
+<a href="/heroes/">Return to Characters</a>

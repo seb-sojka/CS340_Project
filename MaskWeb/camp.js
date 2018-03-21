@@ -14,6 +14,23 @@ module.exports = function(){
         });
     }
 		
+	function getChars(res, mysql, context, complete, id){
+		var sql = "SELECT masksChar.hero_name, masksPlaybook.name as playbook, masksChar.Camp_ID FROM masksChar INNER JOIN masksPlaybook on masksChar.PB_ID = masksPlaybook.PB_ID";
+		sql = "SELECT hero_name, playbook FROM " + sql + " WHERE Camp_ID = ?";
+		console.log("MYSQL:" + sql);
+        var inserts = [id];
+        mysql.pool.query(sql, inserts, function(error, results, fields){
+            if(error){
+                res.write(JSON.stringify(error));
+                res.end();
+            }
+            context.heroes = results[0];
+			console.log("Hero Stuff " + JSON.stringify(context.heroes));
+            complete();
+        });
+	}
+		
+	
     router.get('/', function(req, res){
         var callbackCount = 0;
         var context = {};
@@ -31,7 +48,7 @@ module.exports = function(){
     });
 	
    
-    /* Adds a person, redirects to the people page after adding */
+    /* Adds a campaign, redirects to the people page after adding */
 
     router.post('/', function(req, res){
 		var callbackCount = 0;
@@ -49,7 +66,7 @@ module.exports = function(){
     });
 
 
-    /* Route to delete a person, simply returns a 202 upon success. Ajax will handle this. */
+    /* Route to delete a campaign, simply returns a 202 upon success. Ajax will handle this. */
 
     router.delete('/:id', function(req, res){
         var mysql = req.app.get('mysql');
@@ -67,6 +84,22 @@ module.exports = function(){
             }
         })
     })
+	
+    router.get('/:id', function(req, res){
+        var callbackCount = 0;
+        var context = {};
+        context.jsscripts = ["delete.js"];
+        var mysql = req.app.get('mysql');
+        getCamps(res, mysql, context, complete);
+		getChars(res, mysql, context, complete, id);
+        function complete(){
+            callbackCount++;
+            if(callbackCount >= 2){
+                res.render('campChar', context);
+            }
+
+        }
+    });
 
     return router;
 }();
