@@ -40,7 +40,7 @@ module.exports = function(){
     }
 	
     function getHeroes(res, mysql, context, complete){
-        mysql.pool.query("SELECT masksChar.Char_ID, hero_name, masksPlaybook.name AS playbook, masksCamp.name as camp FROM masksChar INNER JOIN masksPlaybook ON masksChar.PB_ID = masksPlaybook.PB_ID INNER JOIN masksCamp on masksCamp.Camp_ID = masksChar.Camp_ID", function(error, results, fields){
+        mysql.pool.query("SELECT masksChar.Char_ID, hero_name, masksCamp.Camp_ID, masksPlaybook.name AS playbook, masksCamp.name as camp FROM masksChar INNER JOIN masksPlaybook ON masksChar.PB_ID = masksPlaybook.PB_ID INNER JOIN masksCamp on masksCamp.Camp_ID = masksChar.Camp_ID", function(error, results, fields){
             if(error){
                 res.write(JSON.stringify(error));
                 res.end();

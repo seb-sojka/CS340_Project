@@ -15,7 +15,7 @@ module.exports = function(){
     }
 		
 	function getChars(res, mysql, context, complete, id){
-		var sql = "SELECT masksChar.hero_name, masksPlaybook.name as playbook, masksChar.Camp_ID FROM masksChar INNER JOIN masksPlaybook on masksChar.PB_ID = masksPlaybook.PB_ID";
+		var sql = "((SELECT masksChar.hero_name, masksPlaybook.name as playbook, masksChar.Camp_ID FROM masksChar INNER JOIN masksPlaybook on masksChar.PB_ID = masksPlaybook.PB_ID) AS heroes)";
 		sql = "SELECT hero_name, playbook FROM " + sql + " WHERE Camp_ID = ?";
 		console.log("MYSQL:" + sql);
         var inserts = [id];
@@ -24,12 +24,23 @@ module.exports = function(){
                 res.write(JSON.stringify(error));
                 res.end();
             }
-            context.heroes = results[0];
-			console.log("Hero Stuff " + JSON.stringify(context.heroes));
+            context.heroes = results;
             complete();
         });
 	}
 		
+	function getCamp(res, mysql, context, complete, id){
+		var sql = "SELECT Camp_ID, name FROM masksCamp WHERE Camp_ID = ?";
+        var inserts = [id];
+        mysql.pool.query(sql, inserts, function(error, results, fields){
+            if(error){
+                res.write(JSON.stringify(error));
+                res.end();
+            }
+            context.camp = results[0];
+            complete();
+        });
+	}
 	
     router.get('/', function(req, res){
         var callbackCount = 0;
@@ -88,13 +99,14 @@ module.exports = function(){
     router.get('/:id', function(req, res){
         var callbackCount = 0;
         var context = {};
-        context.jsscripts = ["delete.js"];
         var mysql = req.app.get('mysql');
         getCamps(res, mysql, context, complete);
-		getChars(res, mysql, context, complete, id);
+		getCamp(res, mysql, context, complete, req.params.id);
+		getChars(res, mysql, context, complete, req.params.id);
         function complete(){
             callbackCount++;
-            if(callbackCount >= 2){
+            if(callbackCount >= 3){
+				console.log("Context Camp" + JSON.stringify(context.heroes));
                 res.render('campChar', context);
             }
 

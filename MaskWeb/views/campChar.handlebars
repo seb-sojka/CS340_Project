@@ -1,18 +1,26 @@
 <h1>{{camp.name}}</h1>
 <table>
+	<thead> 
+        <th>Name</th> 
+		<th>Playbook</th>
+	</thead>
     <tbody> 
         {{#each heroes}} 
         <tr> 
 			<td>{{hero_name}}</td> 
-			<td>{{playbook}</td>
-        </tr> 
+			<td>{{playbook}}</td>
+        </tr>
         {{/each}} 
     </tbody>
-	<form>
-	Campaign: <select name="campaign"> 
+</table> 
+<form>
+	Campaign: <select name="camp-selector" id="camp-selector" onchange="changeCamp(this.value)" > 
         {{#each camps}}
 			<option value="{{Camp_ID}}">{{name}}</option>
         {{/each}}
+	</select>
 </form>
-</table> 
 <a href="/heroes/">Return to Characters</a>
+<script defer>
+selectCamp({{camp.Camp_ID}});
+</script>

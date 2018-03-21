@@ -31,3 +31,8 @@ function selectPlaybook(id){
 function selectCamp(id){
 	$("#camp-selector").val(id);
 }
+
+function changeCamp(id){
+	var str = "/camp/"+id;
+	window.location.replace(str);
+}
